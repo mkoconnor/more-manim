@@ -10,6 +10,7 @@ class Temperature(Scene):
         self.wait(0)
         header = VGroup(TextMobject(r"$${}^\circ \mathrm{C}$$"), TextMobject(r"$${}^\circ \mathrm{F}$$"))
         header.arrange(RIGHT,buff=1)
+        header.move_to(LEFT)
         celsius = VGroup(*[Integer(i) for i in [0,10,20,30]])
         celsius.arrange(DOWN)
         celsius.set_color_by_gradient(BLUE,RED)
@@ -32,12 +33,14 @@ class Temperature(Scene):
         self.play(Write(fahrenheit[0]))
         self.play(ShowCreation(explainer))
         self.play(Write(fahrenheit[1]))
-        self.play(Transform(explainer,make_explainer("Round number", 1)))
+        explainer2 = make_explainer("Round number", 1)
+        self.play(TransformFromCopy(explainer,explainer2))
         self.play(Write(fahrenheit[2]))
         final_explainer=VGroup(Brace(fahrenheit[2], RIGHT), TextMobject("Digits are reversed"))
         final_explainer.arrange(RIGHT)
         final_explainer.next_to(fahrenheit[2])
-        self.play(Transform(explainer,final_explainer))
+        self.play(TransformFromCopy(explainer2,final_explainer))
+        self.wait(2)
 
 class Temperature_try1(Scene):
     def construct(self):
@@ -79,3 +82,39 @@ class ToEdgeTest(Scene):
             self.wait()
             group.restore()
         self.remove(group)
+
+class TrigDeriv(Scene):
+    def construct(self):
+        title = TextMobject("Why is $\sin'(x)=\cos(x)$?")
+        title.to_edge(UP)
+        self.play(Write(title))
+        text = VGroup(TextMobject(r"Most proofs go through a lemma stating $$\lim_{x\to 0}\frac{\sin(x)}{x} = 0$$"), TextMobject("But this lemma actually isn't necessary"))
+        text.arrange(DOWN, buff=1)
+        text.next_to(title,DOWN, buff = 1)
+        self.play(Write(text[0]))
+        self.play(Write(text[1]))
+        self.wait()
+        self.play(Uncreate(text[0]), Uncreate(text[1]))
+        text2 = TextMobject("All we need are the following two facts:")
+        nums = VGroup(TextMobject("1."), TextMobject("2."))
+        nums.arrange(DOWN)
+        fact1 = TexMobject(r"\sin^2(x)"," + ", r"\cos^2(x)"," = 1")
+        path = TexMobject(r"t\to(",r"\cos(t)",",",r"\sin(t)",")")
+        fact2 = VGroup(TextMobject("The path"),path,TextMobject("has unit velocity"))
+        fact2.arrange(DOWN)
+        facts = VGroup(fact1, fact2)
+        facts.arrange(DOWN)
+#        num1 = TextMobject("1.")
+#        num2 = TextMobject("2.")
+#        num1.next_to(fact1,LEFT)
+#        num1.to_edge(facts,LEFT)
+#        num2.next_to(fact2,LEFT)
+#        num2.to_edge(facts,LEFT)
+        self.play(ShowCreation(fact1),ShowCreation(fact2))
+        self.wait()
+        self.play(
+            Transform(fact1[0],TexMobject("f(x)^2").move_to(fact1[0])),
+            Transform(fact1[2],TexMobject("g(x)^2").move_to(fact1[2])),
+            Transform(path[1],TexMobject("f(t)").move_to(path[1])),
+            Transform(path[3],TexMobject("g(t)").move_to(path[3])))
+                            
