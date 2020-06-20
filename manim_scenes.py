@@ -3,6 +3,35 @@ from math import cos, sin, pi
 
 class Temperature(Scene):
     def construct(self):
+        title = TextMobject("Mnemonics for Common Temperature Conversions")
+        self.play(FadeIn(title))
+        self.wait(0)
+        self.play(FadeOut(title))
+        self.wait(0)
+        header = VGroup(TextMobject(r"$${}^\circ \mathrm{C}$$"), TextMobject(r"$${}^\circ \mathrm{F}$$"))
+        header.arrange(RIGHT)
+        celsius = VGroup(*[Integer(i) for i in [0,10,20,30]])
+        celsius.arrange(DOWN)
+        buff = 0.1
+        celsius.next_to(header[0],BOTTOM,buff=buff)
+        fahrenheit = VGroup(*[Integer(i) for i in [32, 50, 68, 86]])
+        fahrenheit.arrange(DOWN)
+        fahrenheit.next_to(header[1],BOTTOM,buff=buff)
+        self.play(Write(header))
+        self.play(Write(celsius))
+        def make_explainer(text,i):
+            explainer = VGroup(Arrow(start=RIGHT/5,end=LEFT/5), TextMobject(text))
+            explainer.arrange(RIGHT)
+            explainer.next_to(fahrenheit[i],RIGHT)
+            return explainer
+        explainer = make_explainer("Freezing temp of water", 0)
+        self.play(Write(fahrenheit[0]))
+        self.play(ShowCreation(explainer))
+        self.play(Write(fahrenheit[1]))
+        self.play(Transform(explainer,make_explainer("Round number", 1)))
+
+class Temperature_try1(Scene):
+    def construct(self):
         title = VGroup(*[TextMobject(s) for s in ["Mnemonics", "for", "Common", "Temperatures"]])
         title.arrange(RIGHT)
         title.set_color_by_gradient(PINK,BLUE,YELLOW)
