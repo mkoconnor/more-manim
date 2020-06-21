@@ -146,6 +146,9 @@ class TrigSpecifPath(Scene):
         self.play(Write(path_text))
         self.wait()
         path_eq = TexMobject(r"\cos", r"{}'^2", "(", "t", ")", "+", r"\sin", r"{}'^2{}", "(", "t", ")", "=", "1")
+        sqrt = TexMobject(r"\sqrt{\phantom{\cos'^2(t)+\sin'^2(t)")
+        sqrt.move_to(path_eq,aligned_edge=LEFT)
+        sqrt.shift(LEFT / 5)
         self.play(
             FadeOut(path_text[0]),
             FadeOut(path_text[2]),
@@ -176,6 +179,7 @@ class TrigSpecifPath(Scene):
             ReplacementTransform(
                 path_expr[9], path_eq[10]
                 ),
+            Write(sqrt)
             *[Write(path_eq[i]) for i in [1,5,7,11,12]])
             
             
