@@ -117,4 +117,15 @@ class TrigDeriv(Scene):
             Transform(fact1[2],TexMobject("g(x)^2").move_to(fact1[2])),
             Transform(path[1],TexMobject("f(t)").move_to(path[1])),
             Transform(path[3],TexMobject("g(t)").move_to(path[3])))
+
+class TrigSpecifDeriv(Scene):
+    def construct(self):
+        orig = TexMobject(r"\sin^2(x)+\cos^2(x)","=","1")
+        deriv=TexMobject("[",r"\sin^2(x)+\cos^2(x)","]'","=","1","{}'")
+        self.play(Write(orig))
+        self.wait()
+        self.play(ReplacementTransform(orig[0],deriv[1]),ReplacementTransform(orig[2],deriv[4]))
+        self.play(Write(deriv[0]),Write(deriv[2]),Write(deriv[3]),Write(deriv[5]))
+        self.play(Transform(VGroup(deriv[4],deriv[5]),TexMobject("0").move_to(deriv[4])))
+
                             
