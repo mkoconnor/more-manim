@@ -138,5 +138,45 @@ class TrigSpecifDeriv(Scene):
             *[ReplacementTransform(
                 deriv_with_zero_expanded[i + 2], deriv_expanded[i]) for i in [1, 2]])
 
-
+class TrigSpecifPath(Scene):
+    def construct(self):
+        path_expr = TexMobject(r"t\longmapsto (",r"\cos", "(","t",")",",",r"\sin", "(","t",")",")")
+        path_text = VGroup(TextMobject("The path"), path_expr, TextMobject("has unit speed"))
+        path_text.arrange(DOWN)
+        self.play(Write(path_text))
+        self.wait()
+        path_eq = TexMobject(r"\cos", r"{}'^2", "(", "t", ")", "+", r"\sin", r"{}'^2{}", "(", "t", ")", "=", "1")
+        self.play(
+            FadeOut(path_text[0]),
+            FadeOut(path_text[2]),
+            *[FadeOut(path_expr[i]) for i in [0,5,10]]
+        )
+        self.play(
+            ReplacementTransform(
+                path_expr[1], path_eq[0]
+                ),
+            ReplacementTransform(
+                path_expr[2], path_eq[2]
+                ),
+            ReplacementTransform(
+                path_expr[3], path_eq[3]
+                ),
+            ReplacementTransform(
+                path_expr[4], path_eq[4]
+                ),
+            ReplacementTransform(
+                path_expr[6], path_eq[6]
+                ),
+            ReplacementTransform(
+                path_expr[7], path_eq[8]
+                ),
+            ReplacementTransform(
+                path_expr[8], path_eq[9]
+                ),
+            ReplacementTransform(
+                path_expr[9], path_eq[10]
+                ),
+            *[Write(path_eq[i]) for i in [1,5,7,11,12]])
+            
+            
                             
