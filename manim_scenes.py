@@ -126,6 +126,17 @@ class TrigSpecifDeriv(Scene):
         self.wait()
         self.play(ReplacementTransform(orig[0],deriv[1]),ReplacementTransform(orig[2],deriv[4]))
         self.play(Write(deriv[0]),Write(deriv[2]),Write(deriv[3]),Write(deriv[5]))
-        self.play(Transform(VGroup(deriv[4],deriv[5]),TexMobject("0").move_to(deriv[4])))
+        deriv_with_zero_expanded=TexMobject("[",r"\sin^2(x)+\cos^2(x)","]'","=","0")
+        self.play(
+            ReplacementTransform(VGroup(deriv[4], deriv[5]), deriv_with_zero_expanded[4]),
+            *[ReplacementTransform(deriv[i],deriv_with_zero_expanded[i]) for i in range(4)])
+        deriv_expanded=TexMobject(r"\sin(x)\sin'(x) + \cos(x)\cos'(x)", "=", "0")
+        self.play(
+            ReplacementTransform(
+                VGroup(*[deriv_with_zero_expanded[i] for i in [0,1,2]]),
+                deriv_expanded[0]),
+            *[ReplacementTransform(
+                deriv_with_zero_expanded[i + 2], deriv_expanded[i]) for i in [1, 2]])
+
 
                             
