@@ -120,9 +120,14 @@ class TrigDeriv(Scene):
 
 class TrigSpecifDeriv(Scene):
     def construct(self):
+        text1 = TextMobject("Starting from the first property...").to_edge(TOP)
         orig = TexMobject(r"\sin^2(x)+\cos^2(x)","=","1")
         deriv=TexMobject("[",r"\sin^2(x)+\cos^2(x)","]'","=","1","{}'")
+        self.play(Write(text1))
         self.play(Write(orig))
+        self.wait()
+        text2 = TextMobject("...differentiate both sides.").to_edge(TOP)
+        self.play(Transform(text1,text2))
         self.wait()
         self.play(ReplacementTransform(orig[0],deriv[1]),ReplacementTransform(orig[2],deriv[4]))
         self.play(Write(deriv[0]),Write(deriv[2]),Write(deriv[3]),Write(deriv[5]))
@@ -210,7 +215,7 @@ class TrigSolution(Scene):
     def construct(self):
         text = TextMobject("Solving with the quadratic formula yields two solutions:")
         text.to_edge(TOP)
-        sol1 = TexMobject(r"\sin'(x)=\cos(x)", r"\cos'(x)=-\sin(x)").arrange(DOWN)
+        sol1 = TexMobject(r"\sin'(x)=\cos(x)", r"\cos'(x)=-\sin(x)").arrange(DOWN).shift(DOWN/5)
         sol2 = TexMobject(r"\sin'(x)=-\cos(x)", r"\cos'(x)=\sin(x)").arrange(DOWN)
         sol2.next_to(sol1,DOWN, buff = 1)
         self.play(Write(text))
@@ -220,7 +225,10 @@ class TrigSolution(Scene):
         self.play(Write(sol2),ShowCreation(rect2))
         self.wait()
         self.play(Uncreate(text),Uncreate(sol2),Uncreate(rect2))
-        text2 = TextMobject(r"The initial conditions $\cos(0)=1$ and $\sin(0)>0$ leave just this one:").to_edge(TOP)
+        text2 = TextMobject(r"The initial conditions $\cos(0)=1$ and $\sin(0)>0$ leave", "just this one:").arrange(DOWN).to_edge(TOP)
         self.play(Write(text2))
+        self.wait()
+        qed = TextMobject("QED :)").next_to(rect1,BOTTOM)
+        self.play(Write(qed))
     
                             
