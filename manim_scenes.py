@@ -86,9 +86,10 @@ class ToEdgeTest(Scene):
 class TrigDeriv(Scene):
     def construct(self):
         title = TextMobject("Why is $\sin'(x)=\cos(x)$?")
-        title.to_edge(UP)
         self.play(Write(title))
-        text = VGroup(TextMobject(r"Most proofs go through a lemma stating $$\lim_{x\to 0}\frac{\sin(x)}{x} = 0$$"), TextMobject("But this lemma actually isn't necessary"))
+        self.wait(2)
+        self.play(title.to_edge,UP)
+        text = VGroup(TextMobject(r"Most proofs go through a lemma stating: $$\lim_{x\to 0}\frac{\sin(x)}{x} = 0$$"), TextMobject("But this lemma actually isn't necessary!"))
         text.arrange(DOWN, buff=1)
         text.next_to(title,DOWN, buff = 1)
         self.play(Write(text[0]))
@@ -145,15 +146,19 @@ class TrigSpecifDeriv(Scene):
 
 class TrigSpecifPath(Scene):
     def construct(self):
+        text1 = TextMobject("Starting from the second property...").to_edge(TOP)
         path_expr = TexMobject(r"t\longmapsto (",r"\cos", "(","t",")",",",r"\sin", "(","t",")",")")
         path_text = VGroup(TextMobject("The path"), path_expr, TextMobject("has unit speed"))
         path_text.arrange(DOWN)
+        self.play(Write(text1))
         self.play(Write(path_text))
         self.wait()
+        text2 = TextMobject('...apply the definition of "speed":').to_edge(TOP)
         path_eq = TexMobject(r"\cos", r"{}'^2", "(", "t", ")", "+", r"\sin", r"{}'^2{}", "(", "t", ")", "=", "1", "{}^2")
         sqrt = TexMobject(r"\sqrt{\phantom{\cos'^2(t)+\sin'^2(t)")
         sqrt.move_to(path_eq,aligned_edge=LEFT)
         sqrt.shift(LEFT * 0.4)
+        self.play(Transform(text1,text2))
         self.play(
             FadeOut(path_text[0]),
             FadeOut(path_text[2]),
@@ -186,6 +191,9 @@ class TrigSpecifPath(Scene):
                 ),
             Write(sqrt),
             *[Write(path_eq[i]) for i in [1,5,7,11,12]])
+        text3 = TextMobject("... and simplify:").to_edge(TOP)
+        self.wait()
+        self.play(Transform(text1,text3))
         self.play(Uncreate(sqrt), Write(path_eq[13]))
         self.play(Uncreate(path_eq[13]))
 
@@ -230,5 +238,11 @@ class TrigSolution(Scene):
         self.wait()
         qed = TextMobject("QED :)").next_to(rect1,BOTTOM)
         self.play(Write(qed))
-    
-                            
+
+class Trig(Scene):
+    def construct(self):
+        TrigDeriv.construct(self)
+        TrigSpecifDeriv.construct(self)
+        TrigSpecifPath.construct(self)
+        TrigSystem.construct(self)
+        TrigSolution.construct(self)
