@@ -183,6 +183,44 @@ class TrigSpecifPath(Scene):
             *[Write(path_eq[i]) for i in [1,5,7,11,12]])
         self.play(Uncreate(sqrt), Write(path_eq[13]))
         self.play(Uncreate(path_eq[13]))
-            
-            
+
+class TrigSystem(Scene):
+    def construct(self):
+        line1 = TextMobject("So, we have a system of two equations")
+        line2 = TextMobject(r"in the two unknowns ", r"$\sin'(x)$", " and ", r"$\cos'(x)$:")
+        line2[1].set_color(YELLOW)
+        line2[3].set_color(YELLOW)
+        text = VGroup(line1, line2)
+        text.arrange(DOWN)
+        text.to_edge(TOP)
+        self.play(Write(text))
+        self.wait()
+        first_eq = TexMobject(r"\sin(x)", r"\sin'(x)", "+", r"\cos(x)", r"\cos'(x)", "=0")
+        first_eq[1].set_color(YELLOW)
+        first_eq[4].set_color(YELLOW)
+        second_eq = TexMobject(r"\sin'(x)","{}^2+", r"\cos'(x)", "{}^2=1")
+        second_eq[0].set_color(YELLOW)
+        second_eq[2].set_color(YELLOW)
+        system=VGroup(first_eq,second_eq)
+        system.arrange(DOWN)
+        system.shift(BOTTOM / 4)
+        self.play(Write(system))
+        
+class TrigSolution(Scene):
+    def construct(self):
+        text = TextMobject("Solving with the quadratic formula yields two solutions:")
+        text.to_edge(TOP)
+        sol1 = TexMobject(r"\sin'(x)=\cos(x)", r"\cos'(x)=-\sin(x)").arrange(DOWN)
+        sol2 = TexMobject(r"\sin'(x)=-\cos(x)", r"\cos'(x)=\sin(x)").arrange(DOWN)
+        sol2.next_to(sol1,DOWN, buff = 1)
+        self.play(Write(text))
+        rect1 = SurroundingRectangle(sol1)
+        self.play(Write(sol1),ShowCreation(rect1))
+        rect2 = SurroundingRectangle(sol2)
+        self.play(Write(sol2),ShowCreation(rect2))
+        self.wait()
+        self.play(Uncreate(text),Uncreate(sol2),Uncreate(rect2))
+        text2 = TextMobject(r"The initial conditions $\cos(0)=1$ and $\sin(0)>0$ leave just this one:").to_edge(TOP)
+        self.play(Write(text2))
+    
                             
