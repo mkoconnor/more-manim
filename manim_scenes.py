@@ -89,39 +89,36 @@ class TrigDeriv(Scene):
         self.play(Write(title))
         self.wait(2)
         self.play(title.to_edge,UP)
-        text = VGroup(TextMobject(r"Most proofs go through a lemma stating: $$\lim_{x\to 0}\frac{\sin(x)}{x} = 0$$"), TextMobject("But this lemma actually isn't necessary!"))
+        text = VGroup(TextMobject(r"Most proofs go through a lemma stating: $$\lim_{x\to 0}\frac{\sin(x)}{x} = 1$$"), TextMobject("But this lemma actually isn't necessary!"))
         text.arrange(DOWN, buff=1)
         text.next_to(title,DOWN, buff = 1)
         self.play(Write(text[0]))
+        self.wait(2)
         self.play(Write(text[1]))
         self.wait()
         self.play(Uncreate(text[0]), Uncreate(text[1]))
-        text2 = TextMobject("All we need are the following two facts:")
-        nums = VGroup(TextMobject("1."), TextMobject("2."))
-        nums.arrange(DOWN)
-        fact1 = TexMobject(r"\sin^2(x)"," + ", r"\cos^2(x)"," = 1")
+        text2 = TextMobject("All we need are the following two facts:").to_edge(TOP)
+        self.play(Write(text2))
+        fact1 = TexMobject(r"\sin(x)^2 + \cos(x)^2 = 1")
+        fact1_rect = VGroup(fact1,SurroundingRectangle(fact1))
+        num_fact1_rect = VGroup(TextMobject("1."),fact1_rect).arrange(RIGHT)
         path = TexMobject(r"t\to(",r"\cos(t)",",",r"\sin(t)",")")
-        fact2 = VGroup(TextMobject("The path"),path,TextMobject("has unit velocity"))
+        fact2 = VGroup(TextMobject("The path"),path,TextMobject("has unit speed"))
         fact2.arrange(DOWN)
-        facts = VGroup(fact1, fact2)
+        fact2_rect = VGroup(fact2,SurroundingRectangle(fact2))
+        num_fact2_rect = VGroup(TextMobject("2.").align_to(num_fact1_rect[0],LEFT),fact2_rect)
+        facts = VGroup(num_fact1_rect, num_fact2_rect)
         facts.arrange(DOWN)
-#        num1 = TextMobject("1.")
-#        num2 = TextMobject("2.")
-#        num1.next_to(fact1,LEFT)
-#        num1.to_edge(facts,LEFT)
-#        num2.next_to(fact2,LEFT)
-#        num2.to_edge(facts,LEFT)
-        self.play(ShowCreation(fact1),ShowCreation(fact2))
+        facts.shift(BOTTOM / 5)
+        self.play(ShowCreation(facts[0]))
         self.wait()
-        self.play(
-            Transform(fact1[0],TexMobject("f(x)^2").move_to(fact1[0])),
-            Transform(fact1[2],TexMobject("g(x)^2").move_to(fact1[2])),
-            Transform(path[1],TexMobject("f(t)").move_to(path[1])),
-            Transform(path[3],TexMobject("g(t)").move_to(path[3])))
+        self.play(ShowCreation(facts[1]))
+        self.wait(2)
+
 
 class TrigSpecifDeriv(Scene):
     def construct(self):
-        text1 = TextMobject("Starting from the first property...").to_edge(TOP)
+        text1 = TextMobject("Starting from the first fact...").to_edge(TOP)
         orig = TexMobject(r"\sin^2(x)+\cos^2(x)","=","1")
         deriv=TexMobject("[",r"\sin^2(x)+\cos^2(x)","]'","=","1","{}'")
         self.play(Write(text1))
@@ -130,7 +127,7 @@ class TrigSpecifDeriv(Scene):
         text2 = TextMobject("...differentiate both sides.").to_edge(TOP)
         self.play(Transform(text1,text2))
         self.wait()
-        self.play(ReplacementTransform(orig[0],deriv[1]),ReplacementTransform(orig[2],deriv[4]))
+        self.play(ReplacementTransform(orig[0],deriv[1]),ReplacementTransform(orig[1],deriv[3]),ReplacementTransform(orig[2],deriv[4]))
         self.play(Write(deriv[0]),Write(deriv[2]),Write(deriv[3]),Write(deriv[5]))
         deriv_with_zero_expanded=TexMobject("[",r"\sin^2(x)+\cos^2(x)","]'","=","0")
         self.play(
@@ -143,10 +140,11 @@ class TrigSpecifDeriv(Scene):
                 deriv_expanded[0]),
             *[ReplacementTransform(
                 deriv_with_zero_expanded[i + 2], deriv_expanded[i]) for i in [1, 2]])
+        self.wait(2)
 
 class TrigSpecifPath(Scene):
     def construct(self):
-        text1 = TextMobject("Starting from the second property...").to_edge(TOP)
+        text1 = TextMobject("Starting from the second fact...").to_edge(TOP)
         path_expr = TexMobject(r"t\longmapsto (",r"\cos", "(","t",")",",",r"\sin", "(","t",")",")")
         path_text = VGroup(TextMobject("The path"), path_expr, TextMobject("has unit speed"))
         path_text.arrange(DOWN)
@@ -196,6 +194,7 @@ class TrigSpecifPath(Scene):
         self.play(Transform(text1,text3))
         self.play(Uncreate(sqrt), Write(path_eq[13]))
         self.play(Uncreate(path_eq[13]))
+        self.wait(2)
 
 class TrigSystem(Scene):
     def construct(self):
@@ -218,6 +217,7 @@ class TrigSystem(Scene):
         system.arrange(DOWN)
         system.shift(BOTTOM / 4)
         self.play(Write(system))
+        self.wait(2)
         
 class TrigSolution(Scene):
     def construct(self):
@@ -238,6 +238,7 @@ class TrigSolution(Scene):
         self.wait()
         qed = TextMobject("QED :)").next_to(rect1,BOTTOM)
         self.play(Write(qed))
+        self.wait(2)
 
 class Trig(Scene):
     def construct(self):
